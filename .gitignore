@@ -1,0 +1,8 @@
+# cargo build output
+/target
+
+# nix build output
+/result
+
+# makefile build output
+/src/roles.rs
