@@ -53,7 +53,7 @@ our $n = 0;
 foreach (@roles) {
 	my $b = 1 << $n++;
 	$_ = <<"rust";
-	const ${\(uc)}: Self = Self($b);
+	pub const ${\(uc)}: Self = Self($b);
 	#[inline]
 	pub fn is_$_(self) -> bool {
 		self.has(Role::${\ucfirst})

@@ -24,22 +24,44 @@ pub enum Device {
     Bot,
 }
 
-#[derive(Clone, Debug)]
-#[non_exhaustive]
-pub struct Message<'a> {
-    todo: Cow<'a, !>,
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum MessageType {
+    Normal,
+    Join,
+    Leave,
+    GoodPerson,
+    Bridge,
 }
 
 #[derive(Clone, Debug)]
-#[non_exhaustive]
-pub struct Member<'a> {
-    todo: Cow<'a, !>,
+pub struct Message<'a> {
+    pub user_info: Member<'a>,
+    pub id: u64,
+    pub content: Cow<'a, String>,
+    pub timestamp: Instant,
+    pub r#type: MessageType,
+    pub device: Option<Device>,
+    pub bridge_metadata: BridgeMetadata<'a>,
 }
+
+#[derive(Clone, Debug)]
+pub struct Member<'a> {
+    pub id: u64,
+    pub username: Cow<'a, str>,
+    pub roles: Roles,
+}
+
+impl<'a> PartialEq for Member<'a> {
+    fn eq(&self, other: &Self) -> bool {
+        self.id == other.id
+    }
+}
+impl<'a> Eq for Member<'a> {}
 
 #[derive(Clone, Debug)]
 pub struct BridgeMetadata<'a> {
-    from: Cow<'a, str>,
-    color: rgb::RGB8,
+    pub from: Cow<'a, str>,
+    pub color: rgb::RGB8,
 }
 
 #[derive(Clone, Debug)]
